@@ -40,16 +40,16 @@
       transition: background-image 0.5s ease-in-out;
     }
 
-    /* تحسين العرض والرفع للأعلى بدون خلفية بيج */
+    /* رفع المحتوى وإزالة أي خلفيات بيج */
     .content-box {
       width: 90%;
       margin-top: 15vh; /* رفع المحتوى للأعلى ليصبح سهل اللمس */
       padding: 15px;
-      background: transparent; /* إزالة أي خلفية بيج أو بيضاء */
+      background: transparent; /* إزالة الخلفية البيج/الرمادية بالكامل */
       border-radius: 15px;
       text-align: center;
       color: #fff;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 5px rgba(0,0,0,0.9);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -79,7 +79,7 @@
       font-weight: bold;
       border-radius: 25px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
       transition: transform 0.2s, background 0.3s;
       margin-top: 15px;
     }
@@ -119,10 +119,10 @@
     }
 
     .crossword-item label {
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: bold;
       color: #fff;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.9);
     }
 
     /* لعبة البزل التركيب */
@@ -133,7 +133,7 @@
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: repeat(4, 1fr);
       gap: 2px;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       border: 3px solid #ff758c;
       border-radius: 8px;
       margin-top: 10px;
@@ -173,7 +173,7 @@
       line-height: 1.8;
       font-size: 1.05rem;
       color: #fff;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.9);
       border-radius: 10px;
     }
 
@@ -191,6 +191,7 @@
       margin-top: 5px;
       display: none;
       font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
     }
   </style>
 </head>
@@ -243,7 +244,7 @@
       <p style="font-size: 0.85rem; opacity: 0.9;">اضغط على قطعتين لتبديل أمكنتهما</p>
       <div id="puzzle-board"></div>
       <div id="puzzle-success" style="display:none; margin-top:10px;">
-        <p style="color:#00ffcc; font-weight:bold;">ممتاز! اكتملت الصورة 🎉</p>
+        <p style="color:#00ffcc; font-weight:bold; font-size:1.1rem;">ممتاز! اكتملت الصورة 🎉</p>
         <button class="btn" onclick="goToPage(5)">التالي 🚀</button>
       </div>
     </div>
@@ -278,19 +279,19 @@
 </div>
 
 <script>
-  // رابط صور الخلفيات الموزعة على الصفحات السبع
+  // أسماء صورك الخاصة المرفوعة في المستودع بنفس الترتيب
   const bgImages = {
-    1: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1000&auto=format&fit=crop',
-    2: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=1000&auto=format&fit=crop',
-    3: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?q=80&w=1000&auto=format&fit=crop',
-    4: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?q=80&w=1000&auto=format&fit=crop',
-    5: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1000&auto=format&fit=crop',
-    6: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=1000&auto=format&fit=crop',
-    7: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1000&auto=format&fit=crop'
+    1: '1.jpg',
+    2: '2.jpg',
+    3: '3.jpg',
+    4: '4.jpg',
+    5: '5.jpg',
+    6: '6.jpg',
+    7: '7.jpg'
   };
 
-  // صورة البزل الخاصة بالصفحة 4
-  const puzzleImg = 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?q=80&w=1000&auto=format&fit=crop';
+  // استخدام الصورة 4 الخاصة بك للعبة البزل
+  const puzzleImg = '4.jpg';
 
   let currentPage = 1;
 
@@ -338,7 +339,7 @@
     }
   }
 
-  // لعبة البزل العشوائية بدون إظهار الصورة مسبقاً - الصفحة 4
+  // لعبة البزل العشوائية بصورتك رقم 4 - بدون إظهار المعاينة
   let puzzleState = [];
   let selectedPiece = null;
 
@@ -347,13 +348,12 @@
     board.innerHTML = '';
     document.getElementById('puzzle-success').style.display = 'none';
     
-    // إنشاء مصفوفة 16 قطعة مرتبة ثم الخلط العشوائي
     puzzleState = Array.from({length: 16}, (_, i) => i);
     
     // خلط القطع عشوائياً
     do {
       puzzleState.sort(() => Math.random() - 0.5);
-    } while (isPuzzleSolved()); // التثبت من أنها ليست محلولة بالصدفة
+    } while (isPuzzleSolved());
 
     renderPuzzle();
   }
@@ -366,7 +366,6 @@
       const piece = document.createElement('div');
       piece.classList.add('puzzle-piece');
       
-      // حساب الإحداثيات للقطعة من الصورة الأصلية
       const row = Math.floor(pieceIdx / 4);
       const col = pieceIdx % 4;
       
@@ -387,7 +386,6 @@
     if (selectedPiece === null) {
       selectedPiece = index;
     } else {
-      // تبديل موقع القطعتين
       let temp = puzzleState[selectedPiece];
       puzzleState[selectedPiece] = puzzleState[index];
       puzzleState[index] = temp;
